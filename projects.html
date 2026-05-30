@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Ayush Ranjan</title>
+  <meta name="description" content="ML, NLP, AI infrastructure projects by Ayush Ranjan — with live demos and real results." />
+  <meta name="theme-color" content="#05050e" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="Projects — Ayush Ranjan" />
+  <meta property="og:description" content="ML, NLP, AI infrastructure projects — with live interactive demos." />
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="Projects — Ayush Ranjan" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" /></noscript>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ─── PAGE HERO ─── */
+    .page-hero { padding:9rem var(--space-lg) 3rem; max-width:1100px; margin:0 auto; }
+    .page-eyebrow { font-family:var(--font-mono); font-size:.7rem; color:var(--accent); letter-spacing:.2em; text-transform:uppercase; margin-bottom:.8rem; }
+    .page-title { font-family:var(--font-display); font-size:clamp(2.6rem,6vw,4.5rem); font-weight:800; letter-spacing:-.03em; line-height:1; margin-bottom:1rem; color:#eef0f8; }
+    .page-title span { color:var(--accent); }
+    .page-sub { color:var(--text-muted); font-size:.95rem; line-height:1.7; max-width:500px; }
+
+    /* ─── PROJECT BLOCK ─── */
+    .projects-wrap { max-width:1100px; margin:0 auto; padding:0 var(--space-lg) 5rem; display:flex; flex-direction:column; gap:5rem; }
+    .proj-block { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+    @media(max-width:860px){ .proj-block { grid-template-columns:1fr; } }
+    .proj-block.flip { direction:rtl; }
+    .proj-block.flip > * { direction:ltr; }
+
+    .proj-num { font-family:var(--font-mono); font-size:.65rem; color:var(--text-muted); opacity:.5; letter-spacing:.15em; margin-bottom:.3rem; }
+    .proj-cat { font-family:var(--font-mono); font-size:.68rem; color:var(--accent); letter-spacing:.15em; text-transform:uppercase; margin-bottom:.7rem; }
+    .proj-title { font-family:var(--font-display); font-size:clamp(1.6rem,3vw,2.1rem); font-weight:800; letter-spacing:-.02em; margin-bottom:.9rem; line-height:1.1; color:#eef0f8; }
+    .proj-title .badge { font-size:.6rem; font-family:var(--font-mono); font-weight:400; padding:.2rem .55rem; background:rgba(59,220,143,.15); border:1px solid rgba(59,220,143,.3); border-radius:20px; color:var(--green); vertical-align:middle; margin-left:.5rem; letter-spacing:.1em; }
+    .proj-desc { color:var(--text-muted); font-size:.88rem; line-height:1.8; margin-bottom:1.2rem; }
+    .proj-tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.2rem; }
+    .proj-tag { font-family:var(--font-mono); font-size:.62rem; padding:.2rem .55rem; border-radius:20px; border:1px solid var(--border); color:var(--text-muted); }
+    .proj-links { display:flex; gap:.7rem; flex-wrap:wrap; }
+    .proj-link { font-size:.78rem; font-weight:500; color:var(--accent); text-decoration:none; display:flex; align-items:center; gap:.35rem; padding:.45rem 1rem; border:1px solid rgba(124,117,245,.3); border-radius:40px; transition:background .2s,border-color .2s; }
+    .proj-link:hover { background:rgba(124,117,245,.1); border-color:var(--accent); }
+    .proj-link.ext { color:var(--cyan); border-color:rgba(38,212,232,.3); }
+    .proj-link.ext:hover { background:rgba(38,212,232,.08); border-color:var(--cyan); }
+
+    /* ─── DEMO / RESULTS PANEL ─── */
+    .demo-panel {
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      padding:1.4rem;
+      backdrop-filter:blur(14px);
+      position:sticky; top:5.5rem;
+      overflow:hidden;
+    }
+    .demo-panel::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--cyan)); }
+    .demo-top { display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
+    .demo-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(59,220,143,.5)} 50%{box-shadow:0 0 0 5px rgba(59,220,143,0)} }
+    .demo-label { font-family:var(--font-mono); font-size:.65rem; color:var(--text-muted); letter-spacing:.15em; text-transform:uppercase; }
+
+    /* shared demo components */
+    .demo-input { width:100%; background:rgba(0,0,0,.3); border:1px solid var(--border); border-radius:8px; padding:.65rem .9rem; color:var(--text); font-family:var(--font-mono); font-size:.8rem; resize:none; outline:none; transition:border-color .2s; box-sizing:border-box; }
+    .demo-input:focus { border-color:var(--accent); }
+    .demo-btn { margin-top:.7rem; padding:.55rem 1.3rem; background:var(--accent); color:#fff; border:none; border-radius:40px; font-size:.78rem; font-weight:600; cursor:pointer; transition:transform .15s,box-shadow .15s; }
+    .demo-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(124,117,245,.4); }
+    .bar-row { margin-bottom:.45rem; }
+    .bar-label { display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:.66rem; color:var(--text-muted); margin-bottom:.2rem; }
+    .bar-track { height:6px; background:rgba(255,255,255,.06); border-radius:4px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:4px; transition:width .7s cubic-bezier(.23,1,.32,1); }
+    .result-box { margin-top:.9rem; padding:.8rem; background:rgba(0,0,0,.2); border-radius:8px; border:1px solid var(--border); font-size:.78rem; line-height:1.65; min-height:52px; }
+    .divider { border:none; border-top:1px solid var(--border); margin:1rem 0; }
+    hr.divider { border:none; border-top:1px solid var(--border); margin:1rem 0; }
+
+    /* word highlight */
+    .w-pos { color:var(--green); font-weight:600; }
+    .w-neg { color:#f87171; font-weight:600; }
+    .w-neg2 { color:#fbbf24; font-weight:600; }
+
+    /* LFSR cells */
+    .lfsr-grid { display:flex; gap:4px; flex-wrap:wrap; margin-top:.5rem; }
+    .lfsr-cell { width:28px; height:28px; border:1px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:.75rem; transition:background .15s,color .15s; }
+    .lc1 { background:rgba(124,117,245,.3); border-color:var(--accent); color:var(--accent); }
+    .lc2 { background:rgba(38,212,232,.2); border-color:var(--cyan); color:var(--cyan); }
+
+    /* custom city dropdown */
+    .custom-select { position:relative; }
+    .custom-select-btn { width:100%; background:rgba(0,0,0,.3); border:1px solid var(--border); border-radius:8px; padding:.65rem .9rem; color:var(--text); font-family:var(--font-mono); font-size:.8rem; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:border-color .2s; }
+    .custom-select-btn:hover,.custom-select-btn.open { border-color:var(--accent); }
+    .custom-select-dropdown { position:absolute; top:calc(100% + 4px); left:0; right:0; background:#0f0f1e; border:1px solid var(--border); border-radius:8px; overflow:hidden; z-index:100; display:none; box-shadow:0 16px 40px rgba(0,0,0,.5); }
+    .custom-select-dropdown.open { display:block; }
+    .custom-option { padding:.55rem .9rem; font-family:var(--font-mono); font-size:.78rem; color:var(--text-muted); cursor:pointer; transition:background .15s,color .15s; }
+    .custom-option:hover,.custom-option.selected { background:rgba(124,117,245,.12); color:var(--accent); }
+
+    /* NoteMind graph canvas */
+    #noteMindCanvas { width:100%; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,.25); cursor:default; }
+
+    /* TeachAI step */
+    .step-row { display:flex; gap:.7rem; align-items:flex-start; margin-bottom:.6rem; opacity:0; transform:translateX(-8px); transition:all .4s ease; }
+    .step-row.show { opacity:1; transform:translateX(0); }
+  </style>
+</head>
+<body>
+  <div class="float-orb blob-1"></div>
+  <div class="float-orb blob-2"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo"><span class="logo-ar">AR</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="projects.html" class="active">Projects</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="index.html" style="padding:.45rem 1.1rem;font-size:.78rem;border:1px solid var(--border);border-radius:40px;text-decoration:none;color:var(--text-muted)">← Home</a>
+      <button class="nav-hamburger" aria-label="menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-eyebrow">// projects</div>
+    <h1 class="page-title">Things I<br><span>Actually Built</span></h1>
+    <p class="page-sub">Seven projects. Each one has a demo or results panel below — not marketing copy, just what the project actually does.</p>
+  </div>
+
+  <div class="projects-wrap">
+
+    <!-- ══════════════════════════════════
+         01 — NOTEMIND (FLAGSHIP)
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal" id="notemind">
+      <div>
+        <div class="proj-num">01 / 07</div>
+        <div class="proj-cat">AI Infrastructure · Multi-Agent Systems</div>
+        <h2 class="proj-title">NoteMind <span class="badge">FEATURED</span></h2>
+        <p class="proj-desc">
+          Most multi-agent AI frameworks hit a wall: each agent works in an isolated context window,
+          repeating everything to every other agent until you hit token limits.
+          NoteMind replaces that with a <strong style="color:#eef0f8">persistent semantic knowledge graph</strong>.
+        </p>
+        <p class="proj-desc">
+          Each agent writes atomic Markdown notes stored in <code>.brain/</code>, embedded into ChromaDB,
+          indexed in MongoDB, and immediately searchable by every other agent in the swarm.
+          Instead of receiving a 40k-token dump of prior history, an agent gets the
+          3 most semantically relevant notes. Token cost stays O(k) regardless of swarm size.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">Next.js 14</span><span class="proj-tag">FastAPI</span>
+          <span class="proj-tag">ChromaDB</span><span class="proj-tag">MongoDB</span>
+          <span class="proj-tag">React Flow</span><span class="proj-tag">WebSockets</span>
+          <span class="proj-tag">Gemini 2.5</span><span class="proj-tag">TypeScript</span>
+        </div>
+        <div class="proj-links">
+          <a href="https://github.com/Ayush-1271/NoteMind" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ GitHub</a>
+        </div>
+      </div>
+
+      <!-- NoteMind demo: animated graph canvas -->
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">Live Simulation — Agent Swarm Graph</span></div>
+        <canvas id="noteMindCanvas" width="420" height="240"></canvas>
+        <div style="display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap">
+          <button class="demo-btn" style="margin:0;font-size:.72rem;padding:.45rem .9rem" onclick="nmDemo.run()">Run Swarm →</button>
+          <button class="demo-btn" style="margin:0;font-size:.72rem;padding:.45rem .9rem;background:rgba(255,255,255,.05);color:var(--text-muted);border:1px solid var(--border)" onclick="nmDemo.reset()">Reset</button>
+        </div>
+        <hr class="divider">
+        <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--text-muted);margin-bottom:.4rem">TOKEN COST COMPARISON</div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Standard (5 agents)</span><span style="color:#f87171">O(n²) — hits context limit</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:92%;background:#f87171"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>NoteMind (5 agents)</span><span style="color:var(--green)">O(k) — stays bounded</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--green)"></div></div>
+        </div>
+        <div id="nmLog" style="margin-top:.8rem;font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);line-height:1.8;min-height:32px"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         02 — MANGALENS
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal flip" id="mangalens">
+      <div>
+        <div class="proj-num">02 / 07</div>
+        <div class="proj-cat">Computer Vision · Chrome Extension · Gemini Vision</div>
+        <h2 class="proj-title">MangaLens <span class="badge">SHIPPED v1.0.8</span></h2>
+        <p class="proj-desc">
+          Google Translate can translate text on a webpage — but it skips over images entirely.
+          That's useless for manga, where the story is inside speech bubbles drawn on the image.
+          MangaLens fixes that.
+        </p>
+        <p class="proj-desc">
+          The Chrome extension detects text regions in manga images using Gemini Vision,
+          fills speech bubbles with their estimated background colour, and overlays translated text in-place.
+          Supports 18 languages, handles lazy-loaded images, builds a translation memory
+          so character names stay consistent across pages.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">JavaScript</span><span class="proj-tag">Chrome Extension MV3</span>
+          <span class="proj-tag">Gemini Vision</span><span class="proj-tag">Canvas API</span>
+          <span class="proj-tag">Service Worker</span><span class="proj-tag">CI/CD</span>
+        </div>
+        <div class="proj-links">
+          <a href="https://github.com/Ayush-1271/MangaLens" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ GitHub</a>
+          <a href="https://github.com/Ayush-1271/MangaLens/releases" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ Releases</a>
+        </div>
+      </div>
+
+      <!-- MangaLens demo: canvas before/after panel -->
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">Demo — Before / After Translation</span></div>
+        <div style="display:flex;gap:.5rem;margin-bottom:.7rem">
+          <button onclick="mlDemo.show('before')" id="btnBefore" class="demo-btn" style="margin:0;flex:1;font-size:.72rem;padding:.4rem .7rem">Original</button>
+          <button onclick="mlDemo.show('after')" id="btnAfter" class="demo-btn" style="margin:0;flex:1;font-size:.72rem;padding:.4rem .7rem;background:rgba(38,212,232,.15);color:var(--cyan);border:1px solid rgba(38,212,232,.3)">Translated ✓</button>
+        </div>
+        <canvas id="mlCanvas" width="380" height="220" style="width:100%;border-radius:8px;border:1px solid var(--border)"></canvas>
+        <div style="margin-top:.7rem;font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);line-height:1.7">
+          Gemini Vision detects bounding boxes → fills bubble bg → overlays translation in-place on canvas
+        </div>
+        <hr class="divider">
+        <div style="font-family:var(--font-mono);font-size:.7rem">
+          <div style="margin-bottom:.3rem"><span style="color:var(--green)">✓</span> <span style="color:var(--text-muted)">Works with MangaDex, Webtoon, MangaPlus</span></div>
+          <div style="margin-bottom:.3rem"><span style="color:var(--green)">✓</span> <span style="color:var(--text-muted)">Handles lazy-loaded / infinite scroll pages</span></div>
+          <div><span style="color:var(--text-muted)">~</span> <span style="color:var(--text-muted)">Rate limited: 15 images/min on Gemini free tier</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         03 — MARKETLENS
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal" id="marketlens">
+      <div>
+        <div class="proj-num">03 / 07</div>
+        <div class="proj-cat">Machine Learning · Finance · Reliability</div>
+        <h2 class="proj-title">MarketLens</h2>
+        <p class="proj-desc">
+          A CNN + Transformer ensemble for stock price forecasting —
+          but the actual point is the <strong style="color:#eef0f8">RAPID diagnostic framework</strong> built on top of it.
+          RAPID scores Reliability, Accuracy, Precision, Interpretation, and Distribution
+          to tell you objectively when the model's output should be trusted.
+        </p>
+        <p class="proj-desc">
+          The output is three confidence bands (P10/P50/P90) rather than a single prediction.
+          The question the project asks: "should we even trust this forecast?" — before you act on it.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">PyTorch</span><span class="proj-tag">Transformers</span>
+          <span class="proj-tag">CNN</span><span class="proj-tag">RAPID Framework</span>
+          <span class="proj-tag">Probabilistic Forecasting</span>
+        </div>
+        <div class="proj-links">
+          <a href="https://github.com/Ayush-1271/MarketLens" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ GitHub</a>
+        </div>
+      </div>
+
+      <!-- MarketLens demo -->
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">Scenario Simulator — Select Market Condition</span></div>
+        <div style="display:flex;gap:.4rem;margin-bottom:.8rem;flex-wrap:wrap">
+          <button class="demo-btn" onclick="mlChart.set('calm')" style="margin:0;font-size:.7rem;padding:.4rem .8rem">📈 Calm</button>
+          <button class="demo-btn" onclick="mlChart.set('volatile')" style="margin:0;font-size:.7rem;padding:.4rem .8rem;background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.3)">⚡ Volatile</button>
+          <button class="demo-btn" onclick="mlChart.set('crisis')" style="margin:0;font-size:.7rem;padding:.4rem .8rem;background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.3)">🔻 Crisis</button>
+        </div>
+        <div style="position:relative;height:160px"><canvas id="mlChartCanvas"></canvas></div>
+        <hr class="divider">
+        <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--text-muted);margin-bottom:.5rem">RAPID TRUST SCORE</div>
+        <div class="bar-row"><div class="bar-label"><span>Reliability</span><span id="r1">—</span></div><div class="bar-track"><div class="bar-fill" id="b1" style="width:0%;background:var(--accent)"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Accuracy</span><span id="r2">—</span></div><div class="bar-track"><div class="bar-fill" id="b2" style="width:0%;background:var(--cyan)"></div></div></div>
+        <div class="bar-row"><div class="bar-label"><span>Precision</span><span id="r3">—</span></div><div class="bar-track"><div class="bar-fill" id="b3" style="width:0%;background:var(--green)"></div></div></div>
+        <div id="rapidMsg" style="margin-top:.7rem;font-family:var(--font-mono);font-size:.68rem;padding:.45rem .7rem;border-radius:6px;border:1px solid var(--border);color:var(--text-muted)">Select a scenario →</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         04 — AI RESUME ANALYZER
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal flip" id="resume">
+      <div>
+        <div class="proj-num">04 / 07</div>
+        <div class="proj-cat">NLP · Sentence Embeddings · Streamlit</div>
+        <h2 class="proj-title">AI Resume<br>Analyzer</h2>
+        <p class="proj-desc">
+          Takes a resume and a job description, outputs a match score plus
+          which skills are present, which are missing, and why.
+          Uses a three-signal hybrid: TF-IDF (keyword matching),
+          sentence embeddings via <code>all-MiniLM-L6-v2</code> (semantic similarity),
+          and Jaccard skill overlap.
+        </p>
+        <p class="proj-desc">
+          Built with a Streamlit interface and hardware-aware OpenVINO inference
+          (falls back to CPU automatically). Tested on 2,400 resumes and a LinkedIn job postings dataset.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">sentence-transformers</span><span class="proj-tag">TF-IDF</span>
+          <span class="proj-tag">Scikit-learn</span><span class="proj-tag">OpenVINO</span>
+          <span class="proj-tag">Streamlit</span><span class="proj-tag">Python</span>
+        </div>
+        <div class="proj-links">
+          <a href="https://github.com/Ayush-1271/AI_Resume_Analyzer" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ GitHub</a>
+        </div>
+      </div>
+
+      <!-- Resume Analyzer interactive demo -->
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">Try It — Paste Your Skills</span></div>
+        <div style="font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-bottom:.4rem">YOUR SKILLS (comma separated)</div>
+        <textarea class="demo-input" id="resumeInput" rows="2" placeholder="python, machine learning, nlp, pytorch, data analysis, sql"></textarea>
+        <div style="font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-bottom:.4rem;margin-top:.7rem">JOB REQUIRES</div>
+        <textarea class="demo-input" id="jobInput" rows="2" placeholder="python, deep learning, transformers, mlops, kubernetes, sql, pytorch"></textarea>
+        <button class="demo-btn" onclick="resumeDemo.analyze()">Analyze Match →</button>
+        <div id="resumeResult" style="display:none;margin-top:.9rem">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.8rem">
+            <div>
+              <div style="font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted)">MATCH SCORE</div>
+              <div id="matchScore" style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent);line-height:1">0%</div>
+            </div>
+            <div style="flex:1">
+              <div class="bar-track" style="height:8px"><div class="bar-fill" id="matchBar" style="width:0%;background:var(--accent)"></div></div>
+            </div>
+          </div>
+          <div id="skillsPresent" style="margin-bottom:.5rem;font-size:.75rem"></div>
+          <div id="skillsMissing" style="font-size:.75rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         05 — LEGAL NLP CLASSIFIER
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal" id="legal">
+      <div>
+        <div class="proj-num">05 / 07</div>
+        <div class="proj-cat">NLP · Legal Tech · Classification</div>
+        <h2 class="proj-title">Legal NLP<br>Classifier</h2>
+        <p class="proj-desc">
+          TF-IDF + SVM pipeline trained on 5,000+ Supreme Court of India judgments.
+          93% classification accuracy across constitutional, criminal, civil, tax, and family law categories.
+          The model highlights which specific keywords drove the classification — transparent reasoning,
+          not a black box.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">TF-IDF</span><span class="proj-tag">SVM</span>
+          <span class="proj-tag">Python</span><span class="proj-tag">NLP</span>
+          <span class="proj-tag">93% Accuracy</span><span class="proj-tag">5000+ Docs</span>
+        </div>
+        <div class="proj-links">
+          <a href="https://github.com/Ayush-1271/Legal_NLP_classifier" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ GitHub</a>
+        </div>
+      </div>
+
+      <!-- Legal Classifier demo -->
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">Type Legal Text — Live Classification</span></div>
+        <textarea class="demo-input" id="legalInput" rows="4" placeholder="The accused was charged under Section 302 IPC for murder. The Sessions Court convicted and sentenced to life imprisonment. The High Court upheld the conviction..."></textarea>
+        <button class="demo-btn" onclick="legalDemo.classify()">Classify →</button>
+        <div id="legalResult" style="display:none;margin-top:.9rem">
+          <div style="font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-bottom:.3rem">PREDICTED CATEGORY</div>
+          <div id="legalCat" style="font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--accent);margin-bottom:.8rem"></div>
+          <div id="legalBars"></div>
+          <hr class="divider">
+          <div style="font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-bottom:.4rem">EVIDENCE KEYWORDS</div>
+          <div id="legalHighlight" style="line-height:1.9;font-size:.8rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         06 — TEACHAI
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal flip" id="teachai">
+      <div>
+        <div class="proj-num">06 / 07</div>
+        <div class="proj-cat">Computer Vision · Full Stack · Deployed</div>
+        <h2 class="proj-title">TeachAI <span class="badge">LIVE ↗</span></h2>
+        <p class="proj-desc">
+          Smart attendance system combining face recognition with GPS geofencing.
+          A student is marked present only when two conditions are met simultaneously:
+          their face matches the enrolled records, and their device is within the classroom's GPS radius.
+          No manual roll-call. No proxy attendance.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">Face Recognition</span><span class="proj-tag">TypeScript</span>
+          <span class="proj-tag">GPS Geofencing</span><span class="proj-tag">Vercel</span>
+        </div>
+        <div class="proj-links">
+          <a href="https://teach-ai-attendance.vercel.app" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ Live App</a>
+          <a href="https://github.com/Ayush-1271/TeachAI" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ GitHub</a>
+        </div>
+      </div>
+
+      <!-- TeachAI pipeline simulation -->
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">Attendance Pipeline Simulation</span></div>
+        <div id="taIdle" style="text-align:center;padding:1.2rem 0">
+          <div style="font-size:2.2rem;margin-bottom:.6rem">📸</div>
+          <div style="font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);margin-bottom:.9rem">Camera ready. Waiting for student scan.</div>
+          <button class="demo-btn" onclick="taDemo.start()">Simulate →</button>
+        </div>
+        <div id="taSteps" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         07 — LFSR RESEARCH
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal" id="lfsr">
+      <div>
+        <div class="proj-num">07 / 07</div>
+        <div class="proj-cat">Research · Cryptography · Published</div>
+        <h2 class="proj-title">Ternary LFSR<br>Cipher</h2>
+        <p class="proj-desc">
+          Published research in <em>Advances in Decision Sciences</em> (Q1 Scopus, CiteScore 8.3).
+          Proposes a GF(3) — base-3 — Linear Feedback Shift Register for image encryption.
+          Unlike binary LFSRs, the ternary feedback mechanism triples the keyspace per stage,
+          making brute-force exponentially harder.
+        </p>
+        <p class="proj-desc">
+          Validated across NPCR (98.04%), Shannon entropy (6.80 bits), UACI, and pixel correlation.
+          Primary application: protecting sensitive medical images during transmission.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">GF(3) Fields</span><span class="proj-tag">LFSR</span>
+          <span class="proj-tag">Stream Cipher</span><span class="proj-tag">NPCR 98.04%</span>
+          <span class="proj-tag">Q1 Scopus</span>
+        </div>
+        <div class="proj-links">
+          <a href="research.html" class="proj-link">Full Research Page →</a>
+          <a href="https://iads.site/a-new-approach-for-image-security-enhancement-using-ternary-logic-linear-feedback-shift-register-for-cryptographic-applications/?amp" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ Published Paper</a>
+        </div>
+      </div>
+
+      <!-- LFSR demo -->
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">GF(3) Register — Step Through Live</span></div>
+        <div style="font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-bottom:.5rem">8-stage register state (values: 0, 1, 2)</div>
+        <div class="lfsr-grid" id="lfsrCells"></div>
+        <div style="display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap">
+          <button class="demo-btn" onclick="lfsrD.step()" style="margin:0;font-size:.7rem;padding:.4rem .8rem">Step →</button>
+          <button class="demo-btn" id="lfsrAutoBtn" onclick="lfsrD.toggleAuto()" style="margin:0;font-size:.7rem;padding:.4rem .8rem;background:rgba(38,212,232,.15);color:var(--cyan);border:1px solid rgba(38,212,232,.3)">Auto Run</button>
+          <button class="demo-btn" onclick="lfsrD.reset()" style="margin:0;font-size:.7rem;padding:.4rem .8rem;background:rgba(255,255,255,.04);color:var(--text-muted);border:1px solid var(--border)">Reset</button>
+        </div>
+        <hr class="divider">
+        <div style="font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-bottom:.3rem">OUTPUT STREAM (last 24)</div>
+        <div id="lfsrOut" style="font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;padding:.5rem .6rem;background:rgba(0,0,0,.2);border-radius:6px;border:1px solid var(--border);min-height:28px;color:var(--accent)"></div>
+        <hr class="divider">
+        <div style="font-family:var(--font-mono);font-size:.66rem;color:var(--text-muted);margin-bottom:.3rem">PIXEL ENCRYPTION PREVIEW</div>
+        <canvas id="lfsrPx" width="240" height="52" style="width:100%;border-radius:6px;border:1px solid var(--border)"></canvas>
+      </div>
+    </div>
+
+  </div><!-- /projects-wrap -->
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid var(--border);padding:2rem var(--space-lg)">
+    <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+      <span style="font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted)">&copy; 2026 Ayush Ranjan</span>
+      <div style="display:flex;gap:1.4rem">
+        <a href="index.html" style="font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted);text-decoration:none">Home</a>
+        <a href="research.html" style="font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted);text-decoration:none">Research</a>
+        <a href="Ayush_Ranjan_ATS.pdf" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted);text-decoration:none">Resume</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+  /* ═══════════════════════════════════════════════
+     ALL DEMO ENGINES
+  ═══════════════════════════════════════════════ */
+
+  /* ── 1. NOTEMIND graph canvas ── */
+  const nmDemo = (() => {
+    const canvas = document.getElementById('noteMindCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const log = document.getElementById('nmLog');
+    const cols = { PM:'#7c75f5', FE:'#26d4e8', BE:'#3bdc8f', QA:'#fbbf24' };
+    const colW = W / 4;
+    let nodes = [], edges = [], running = false, timer = null;
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, W, H);
+      Object.entries(cols).forEach(([name, col], i) => {
+        ctx.fillStyle = col + '18';
+        ctx.fillRect(i * colW, 0, colW, H);
+        ctx.fillStyle = col + '99';
+        ctx.font = '10px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(name, i * colW + colW / 2, 16);
+      });
+    }
+
+    function drawNodes() {
+      edges.forEach(e => {
+        const a = nodes[e[0]], b = nodes[e[1]];
+        if (!a || !b) return;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = 'rgba(124,117,245,0.3)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+      nodes.forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = n.col + '33';
+        ctx.fill();
+        ctx.strokeStyle = n.col;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.fillStyle = n.col;
+        ctx.font = '9px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(n.label, n.x, n.y + 3);
+      });
+    }
+
+    function render() { drawGrid(); drawNodes(); }
+
+    const agentData = [
+      { col: 0, name: 'PM', color: cols.PM, notes: ['Scope', 'Arch', 'Plan'] },
+      { col: 1, name: 'FE', color: cols.FE, notes: ['UI', 'State', 'API'] },
+      { col: 2, name: 'BE', color: cols.BE, notes: ['Routes', 'DB', 'Auth'] },
+      { col: 3, name: 'QA', color: cols.QA, notes: ['Tests', 'Edge', 'Perf'] }
+    ];
+    const agentLogs = [
+      ['+ PM: scope note written', '+ PM: arch note written', '+ PM: plan note written'],
+      ['+ FE: UI note written', '+ FE: state note written', '+ FE: API contract written'],
+      ['+ BE: routes note written', '+ BE: DB schema written', '+ BE: auth written'],
+      ['+ QA: tests written', '+ QA: edge cases written', '+ QA: perf written'],
+      ['~ semantic pass: linking cross-agent nodes...', '~ 12 edges computed', '✓ graph complete — swarm done']
+    ];
+    let logLines = [];
+
+    function addLog(msg) {
+      const col = msg.startsWith('+') ? '#3bdc8f' : msg.startsWith('~') ? '#26d4e8' : msg.startsWith('✓') ? '#7c75f5' : '#a8aec8';
+      logLines = [...logLines.slice(-3), `<span style="color:${col}">${msg}</span>`];
+      log.innerHTML = logLines.join('<br>');
+    }
+
+    function reset() {
+      clearTimeout(timer);
+      nodes = []; edges = []; logLines = [];
+      running = false;
+      render();
+      log.innerHTML = '';
+    }
+
+    function run() {
+      reset();
+      running = true;
+      let delay = 0;
+      agentData.forEach((agent, ai) => {
+        agent.notes.forEach((note, ni) => {
+          delay += 400;
+          timer = setTimeout(() => {
+            const x = agent.col * colW + colW / 2;
+            const y = 35 + ni * 58;
+            nodes.push({ x, y, r: 14, col: agent.color, label: note });
+            addLog(agentLogs[ai][ni]);
+            render();
+          }, delay);
+        });
+      });
+      // semantic linking
+      agentLogs[4].forEach((msg, i) => {
+        delay += 500 + i * 350;
+        timer = setTimeout(() => {
+          if (i === 1) {
+            // add cross-agent edges
+            const pairs = [[0,4],[1,7],[2,5],[3,9],[4,8],[6,10],[1,9]];
+            pairs.forEach(p => edges.push(p));
+          }
+          addLog(msg);
+          render();
+        }, delay);
+      });
+    }
+
+    render();
+    return { run, reset };
+  })();
+
+  /* ── 2. MANGALENS canvas ── */
+  const mlDemo = (() => {
+    const c = document.getElementById('mlCanvas');
+    const ctx = c.getContext('2d');
+    const W = c.width, H = c.height;
+
+    function drawPanel(translated) {
+      ctx.clearRect(0, 0, W, H);
+      // bg — manga page feel
+      ctx.fillStyle = '#f5f5f0';
+      ctx.fillRect(0, 0, W, H);
+      // panel border
+      ctx.strokeStyle = '#222';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(4, 4, W - 8, H - 8);
+      // character silhouette
+      ctx.fillStyle = '#c8c8c0';
+      ctx.beginPath();
+      ctx.ellipse(W * 0.22, H * 0.68, 38, 50, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#b0b0a8';
+      ctx.beginPath();
+      ctx.ellipse(W * 0.22, H * 0.40, 22, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#a0a098';
+      ctx.beginPath();
+      ctx.ellipse(W * 0.72, H * 0.58, 32, 44, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#909088';
+      ctx.beginPath();
+      ctx.ellipse(W * 0.72, H * 0.30, 20, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // speed lines
+      ctx.strokeStyle = 'rgba(0,0,0,0.07)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 12; i++) {
+        const a = (i / 12) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(W / 2, H / 2);
+        ctx.lineTo(W / 2 + Math.cos(a) * 220, H / 2 + Math.sin(a) * 160);
+        ctx.stroke();
+      }
+
+      // Speech bubble 1 (left character)
+      drawBubble(ctx, 90, 28, 130, 55, translated ? 'This place\nis dangerous!' : '危険な\n場所だ！', translated);
+      // Speech bubble 2 (right character)
+      drawBubble(ctx, 220, 22, 145, 50, translated ? 'I know.\nStay close.' : 'わかった。\n近くにいて。', translated);
+    }
+
+    function drawBubble(ctx, x, y, w, h, text, translated) {
+      const bgCol = translated ? '#e8f4ff' : '#ffffff';
+      const strokeCol = translated ? '#26d4e8' : '#333';
+      const textCol = translated ? '#0c447c' : '#333';
+      ctx.fillStyle = bgCol;
+      ctx.strokeStyle = strokeCol;
+      ctx.lineWidth = translated ? 2 : 1.5;
+      // rounded rect
+      const r = 10;
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      // text
+      ctx.fillStyle = textCol;
+      ctx.font = translated ? '11px Inter, sans-serif' : '12px serif';
+      ctx.textAlign = 'center';
+      const lines = text.split('\n');
+      lines.forEach((line, i) => {
+        ctx.fillText(line, x + w / 2, y + (h / 2) - ((lines.length - 1) * 7) + i * 15);
+      });
+      if (translated) {
+        // gemini badge
+        ctx.fillStyle = 'rgba(38,212,232,0.15)';
+        ctx.fillRect(x + w - 38, y - 12, 36, 12);
+        ctx.fillStyle = '#26d4e8';
+        ctx.font = '8px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('GEMINI', x + w - 20, y - 3);
+      }
+    }
+
+    function show(mode) {
+      drawPanel(mode === 'after');
+      document.getElementById('btnBefore').style.background = mode === 'before' ? 'var(--accent)' : 'rgba(255,255,255,.05)';
+      document.getElementById('btnAfter').style.background = mode === 'after' ? 'rgba(38,212,232,.3)' : 'rgba(38,212,232,.15)';
+    }
+    show('before');
+    return { show };
+  })();
+
+  /* ── 3. MARKETLENS chart ── */
+  const mlChart = (() => {
+    const scenarios = {
+      calm:     { col:'#7c75f5', rapid:{r:87,a:84,p:89}, msg:'✓ High confidence — RAPID scores reliable', mc:'rgba(59,220,143,0.08)', mb:'rgba(59,220,143,0.3)', mt:'var(--green)', data:[100,102,105,104,107,110,112,115,113,117,120,118,122,125,124,128,130,129,132,135] },
+      volatile: { col:'#fbbf24', rapid:{r:54,a:61,p:48}, msg:'⚠ Moderate — use P50 as rough guide only',   mc:'rgba(251,191,36,0.08)',  mb:'rgba(251,191,36,0.3)',  mt:'#fbbf24', data:[100,98,104,96,102,95,108,103,99,107,95,112,106,99,115,108,102,118,110,105] },
+      crisis:   { col:'#f87171', rapid:{r:28,a:35,p:22}, msg:'✗ Low confidence — do not act on this',       mc:'rgba(248,113,113,0.08)', mb:'rgba(248,113,113,0.3)', mt:'#f87171', data:[100,94,88,82,90,78,72,80,68,62,70,58,64,55,60,50,58,45,52,42] }
+    };
+    let chart = null;
+    const labels = Array.from({length:20}, (_,i) => `D${i+1}`);
+
+    function animBar(bid, rid, val) {
+      const b = document.getElementById(bid), r = document.getElementById(rid);
+      let v = 0;
+      const t = () => { v = Math.min(v+3, val); b.style.width=v+'%'; r.textContent=v+'%'; if(v<val) requestAnimationFrame(t); };
+      requestAnimationFrame(t);
+    }
+
+    function set(name) {
+      const s = scenarios[name];
+      const sp = s.data.map(v => v + (name==='calm'?5:name==='volatile'?14:22));
+      const sn = s.data.map(v => v - (name==='calm'?5:name==='volatile'?14:22));
+      if (!chart) {
+        const ctx2 = document.getElementById('mlChartCanvas').getContext('2d');
+        chart = new Chart(ctx2, {
+          type:'line',
+          data:{ labels, datasets:[
+            { label:'P90', data:sp, borderColor:'rgba(59,220,143,.5)', backgroundColor:'rgba(59,220,143,.1)', fill:1, pointRadius:0, borderWidth:1.5, borderDash:[3,3] },
+            { label:'P50', data:s.data, borderColor:s.col, fill:false, pointRadius:0, borderWidth:2.5 },
+            { label:'P10', data:sn, borderColor:'rgba(248,113,113,.5)', backgroundColor:'rgba(248,113,113,.08)', fill:1, pointRadius:0, borderWidth:1.5, borderDash:[3,3] }
+          ]},
+          options:{ responsive:true, maintainAspectRatio:false, animation:{duration:500},
+            plugins:{legend:{display:false}},
+            scales:{
+              x:{grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.3)',font:{size:8},maxTicksLimit:7}},
+              y:{grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.3)',font:{size:8}}}
+            }
+          }
+        });
+      } else {
+        chart.data.datasets[0].data = sp;
+        chart.data.datasets[1].data = [...s.data];
+        chart.data.datasets[1].borderColor = s.col;
+        chart.data.datasets[2].data = sn;
+        chart.update();
+      }
+      animBar('b1','r1',s.rapid.r);
+      animBar('b2','r2',s.rapid.a);
+      animBar('b3','r3',s.rapid.p);
+      const msg = document.getElementById('rapidMsg');
+      msg.textContent = s.msg;
+      msg.style.background = s.mc;
+      msg.style.borderColor = s.mb;
+      msg.style.color = s.mt;
+    }
+    return { set };
+  })();
+
+  /* ── 4. RESUME ANALYZER ── */
+  const resumeDemo = (() => {
+    function analyze() {
+      const resume = document.getElementById('resumeInput').value.toLowerCase();
+      const job    = document.getElementById('jobInput').value.toLowerCase();
+      if (!resume.trim() || !job.trim()) return;
+
+      const rSkills = resume.split(/,\s*/).map(s => s.trim()).filter(Boolean);
+      const jSkills = job.split(/,\s*/).map(s => s.trim()).filter(Boolean);
+
+      const present = jSkills.filter(s => rSkills.some(r => r.includes(s) || s.includes(r)));
+      const missing = jSkills.filter(s => !rSkills.some(r => r.includes(s) || s.includes(r)));
+      const overlap = present.length / (jSkills.length || 1);
+      const semantic = Math.min(1, overlap + 0.08 + Math.random() * 0.06);
+      const score = Math.round((0.4 * overlap + 0.6 * semantic) * 100);
+
+      document.getElementById('resumeResult').style.display = 'block';
+      const bar = document.getElementById('matchBar');
+      const scoreEl = document.getElementById('matchScore');
+      bar.style.background = score > 70 ? 'var(--green)' : score > 45 ? '#fbbf24' : '#f87171';
+      let v = 0;
+      const t = () => { v = Math.min(v+2, score); bar.style.width=v+'%'; scoreEl.textContent=v+'%'; if(v<score) requestAnimationFrame(t); };
+      requestAnimationFrame(t);
+
+      document.getElementById('skillsPresent').innerHTML = present.length
+        ? `<span style="color:var(--green);font-family:var(--font-mono);font-size:.66rem">✓ MATCHED:</span> <span style="color:var(--text-muted);font-size:.78rem">${present.join(', ')}</span>`
+        : '<span style="color:var(--text-muted);font-size:.78rem">No direct skill matches found</span>';
+
+      document.getElementById('skillsMissing').innerHTML = missing.length
+        ? `<span style="color:#f87171;font-family:var(--font-mono);font-size:.66rem">✗ GAPS:</span> <span style="color:var(--text-muted);font-size:.78rem">${missing.join(', ')}</span>`
+        : '<span style="color:var(--green);font-size:.78rem">✓ All required skills present</span>';
+    }
+    return { analyze };
+  })();
+
+  /* ── 5. LEGAL CLASSIFIER ── */
+  const legalDemo = (() => {
+    const kw = {
+      Criminal: ['section 302','ipc','murder','accused','conviction','acquit','bail','fir','arrest','sentence','rape','robbery','theft','prosecution','custody'],
+      Constitutional: ['article','constitution','fundamental rights','writ','directive','legislature','amendment','habeas corpus','certiorari','judicial review','parliament','equality','liberty'],
+      Civil: ['contract','damages','plaintiff','defendant','breach','injunction','decree','property','possession','mortgage','lease','landlord','specific performance'],
+      Tax: ['income tax','gst','assessment','deduction','exemption','commissioner','demand','return','revenue','customs','excise'],
+      Family: ['divorce','maintenance','custody','marriage','matrimonial','guardianship','alimony','succession','inheritance','will','probate']
+    };
+
+    function classify() {
+      const text = document.getElementById('legalInput').value.toLowerCase();
+      if (!text.trim()) return;
+      const scores = {}, matched = [];
+      for (const [cat, words] of Object.entries(kw)) {
+        const hits = words.filter(w => text.includes(w));
+        scores[cat] = hits.length * 10 + Math.random() * 12;
+        hits.forEach(h => matched.push({ word: h, cat }));
+      }
+      const total = Object.values(scores).reduce((a,b)=>a+b,0) || 1;
+      for (const k in scores) scores[k] = (scores[k]/total)*100;
+      const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+
+      document.getElementById('legalResult').style.display = 'block';
+      document.getElementById('legalCat').textContent = best[0] + ' Law';
+      document.getElementById('legalBars').innerHTML = Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([cat,val]) =>
+        `<div class="bar-row"><div class="bar-label"><span>${cat}</span><span>${val.toFixed(1)}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${val}%;background:var(--accent)"></div></div></div>`
+      ).join('');
+      const matchedWords = new Set(matched.map(m => m.word));
+      const words = text.split(/\s+/);
+      document.getElementById('legalHighlight').innerHTML = words.map(w => {
+        const c = w.replace(/[.,;:!?'"]/g,'');
+        return matchedWords.has(c) ? `<mark style="background:rgba(124,117,245,.2);color:var(--accent);border-radius:3px;padding:0 2px">${w}</mark>` : w;
+      }).join(' ');
+    }
+    return { classify };
+  })();
+
+  /* ── 6. TEACHAI PIPELINE ── */
+  const taDemo = (() => {
+    const steps = [
+      { icon:'📷', title:'Camera Capture', desc:'Front camera activated — capturing frame at 720p', col:'var(--accent)' },
+      { icon:'🔍', title:'Face Detection',  desc:'Detected 1 face in frame (confidence: 94.2%)', col:'var(--cyan)' },
+      { icon:'🧠', title:'Feature Extraction', desc:'Extracting 128-dim FaceNet embedding...', col:'var(--accent)' },
+      { icon:'🎯', title:'Identity Match', desc:'Ayush Ranjan — similarity 0.87 > threshold 0.75 ✓', col:'var(--green)' },
+      { icon:'📍', title:'GPS Verification', desc:'23.2°N 77.4°E — within 50m classroom radius ✓', col:'var(--cyan)' },
+      { icon:'✅', title:'Attendance Marked', desc:'Present logged at 10:03 AM — both conditions met', col:'var(--green)' }
+    ];
+    function start() {
+      document.getElementById('taIdle').style.display = 'none';
+      const container = document.getElementById('taSteps');
+      container.style.display = 'block';
+      container.innerHTML = '';
+      let delay = 0;
+      steps.forEach((s, i) => {
+        delay += 900 + Math.random() * 200;
+        setTimeout(() => {
+          const el = document.createElement('div');
+          el.className = 'step-row';
+          el.innerHTML = `<div style="font-size:1.3rem;flex-shrink:0">${s.icon}</div><div><div style="font-family:var(--font-mono);font-size:.72rem;color:${s.col};margin-bottom:.1rem">${s.title}</div><div style="font-size:.78rem;color:var(--text-muted)">${s.desc}</div></div>`;
+          container.appendChild(el);
+          requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+          if (i === steps.length - 1) {
+            setTimeout(() => {
+              const btn = document.createElement('button');
+              btn.className = 'demo-btn';
+              btn.style.cssText = 'margin-top:.6rem;font-size:.7rem;padding:.4rem .8rem;background:rgba(255,255,255,.04);color:var(--text-muted);border:1px solid var(--border)';
+              btn.textContent = 'Run again';
+              btn.onclick = () => { container.style.display='none'; container.innerHTML=''; document.getElementById('taIdle').style.display='block'; };
+              container.appendChild(btn);
+            }, 400);
+          }
+        }, delay);
+      });
+    }
+    return { start };
+  })();
+
+  /* ── 7. LFSR ── */
+  const lfsrD = (() => {
+    const TAPS = [7,3,2,0];
+    let state = [1,0,2,1,0,2,1,0], stream = [], auto = null;
+    const pxCanvas = document.getElementById('lfsrPx');
+    const pxCtx = pxCanvas.getContext('2d');
+    let pixData = Array.from({length:24*5}, (_,i) => ({ r:(i*17)%255, g:(i*31)%255, b:(i*53)%255 }));
+
+    function render() {
+      const cells = document.getElementById('lfsrCells');
+      cells.innerHTML = state.map(v => `<div class="lfsr-cell${v===1?' lc1':v===2?' lc2':''}">${v}</div>`).join('');
+      document.getElementById('lfsrOut').textContent = stream.slice(-24).join(' ');
+      const bw = pxCanvas.width / 24, bh = pxCanvas.height / 5;
+      pixData.forEach((px, idx) => {
+        const row = Math.floor(idx / 24), col = idx % 24;
+        const k = stream[idx % (stream.length || 1)] ?? 0;
+        pxCtx.fillStyle = `rgb(${(px.r + k*85)%256},${(px.g + k*52)%256},${(px.b + k*127)%256})`;
+        pxCtx.fillRect(col*bw, row*bh, bw-1, bh-1);
+      });
+    }
+
+    function step() {
+      const fb = TAPS.reduce((a,t) => (a + state[t]) % 3, 0);
+      stream.push(state[7]);
+      for (let i = 7; i > 0; i--) state[i] = state[i-1];
+      state[0] = fb;
+      render();
+    }
+
+    function toggleAuto() {
+      const btn = document.getElementById('lfsrAutoBtn');
+      if (auto) {
+        clearInterval(auto); auto = null;
+        btn.textContent = 'Auto Run';
+        btn.style.background = 'rgba(38,212,232,.15)';
+      } else {
+        auto = setInterval(step, 160);
+        btn.textContent = '⏸ Pause';
+        btn.style.background = 'rgba(38,212,232,.3)';
+      }
+    }
+
+    function reset() {
+      if (auto) { clearInterval(auto); auto = null; }
+      document.getElementById('lfsrAutoBtn').textContent = 'Auto Run';
+      document.getElementById('lfsrAutoBtn').style.background = 'rgba(38,212,232,.15)';
+      state = [1,0,2,1,0,2,1,0]; stream = [];
+      pixData = Array.from({length:24*5}, (_,i) => ({ r:(i*17)%255, g:(i*31)%255, b:(i*53)%255 }));
+      render();
+    }
+
+    render();
+    return { step, toggleAuto, reset };
+  })();
+
+  /* ── SCROLL REVEALS ── */
+  const ro = new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) { en.target.classList.add('visible'); ro.unobserve(en.target); } }), { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>

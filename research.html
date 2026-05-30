@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research — Ayush Ranjan</title>
+  <meta name="description" content="Published research: Ternary LFSR-based image encryption for healthcare data security." />
+  <meta name="theme-color" content="#05050e" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="Research — Ayush Ranjan" />
+  <meta property="og:description" content="Q1 Scopus paper: GF(3) LFSR stream cipher for image encryption. NPCR 98.04%, Shannon entropy 6.80 bits." />
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="Research — Ayush Ranjan" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    .nav-links { display: flex; }
+
+    .page-hero {
+      padding: 9rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(59,220,143,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Abstract block ── */
+    .abstract-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3rem;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .abstract-card::before {
+      content: '"';
+      position: absolute;
+      top: -0.5rem; left: 1.5rem;
+      font-size: 8rem;
+      color: var(--accent);
+      opacity: 0.06;
+      font-family: var(--display);
+      line-height: 1;
+    }
+    .abstract-text {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.9;
+      max-width: 800px;
+    }
+
+    /* ── Metrics grid ── */
+    .metrics-full {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    @media (max-width: 900px) { .metrics-full { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .metrics-full { grid-template-columns: 1fr 1fr; } }
+
+    .m-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      text-align: center;
+      transition: all var(--transition);
+      overflow: hidden;
+      min-width: 0; /* prevents grid blowout */
+    }
+    .m-card:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-3px);
+    }
+    .m-card .val {
+      font-family: var(--display);
+      font-size: clamp(1.1rem, 2.2vw, 1.65rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+      display: block;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .m-card .metric-name {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+    }
+    .m-card .metric-desc {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+      line-height: 1.4;
+    }
+
+    /* ── LFSR visualizer ── */
+    .lfsr-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-top: 3rem;
+    }
+
+    #lfsr-canvas {
+      width: 100%;
+      height: 140px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .lfsr-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .lfsr-btn {
+      padding: 0.5rem 1.1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      font-weight: 600;
+      transition: all var(--transition);
+    }
+    .lfsr-btn:hover { background: #6a63e8; }
+    .lfsr-btn.ghost {
+      background: transparent;
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+    }
+    .lfsr-btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .lfsr-output {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--green);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      letter-spacing: 0.1em;
+      flex: 1;
+      min-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ── Contribution grid ── */
+    .contrib-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .contrib-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .contrib-card:hover { border-color: var(--border-bright); transform: translateY(-3px); }
+    .contrib-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .contrib-card.primary::before { background: linear-gradient(90deg, var(--accent), var(--cyan)); }
+    .contrib-card.secondary::before { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+
+    .contrib-num {
+      font-family: var(--display);
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--border-bright);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .contrib-card h3 { font-size: 1rem; margin-bottom: 0.75rem; }
+    .contrib-card p { font-size: 0.85rem; color: var(--text); }
+
+    /* ── Citation block ── */
+    .citation-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-top: 2rem;
+      position: relative;
+    }
+    .citation-copy {
+      position: absolute;
+      top: 0.75rem; right: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      font-family: var(--mono);
+      transition: all var(--transition);
+    }
+    .citation-copy:hover { color: var(--accent); border-color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .contrib-grid { grid-template-columns: 1fr; }
+      .abstract-card { padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <div class="nav-logo">
+      <a href="index.html" style="color:inherit; text-decoration:none;"><span>&lt;</span>ayush.ranjan<span>/&gt;</span></a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="index.html#experience">Experience</a></li>
+      <li><a href="research.html" style="color:var(--accent);">Research</a></li>
+      <li><a href="mailto:ayushranjan1271@gmail.com" class="nav-cta">Contact ↗</a></li>
+    </ul>
+    <div class="nav-hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <p class="section-label" style="opacity:1; color:var(--green);">Published Research</p>
+    <h1 style="margin-top:0.5rem; font-size:clamp(1.8rem, 4.5vw, 3.5rem); max-width:800px; line-height:1.2;">
+      A New Approach for Image Security Using<br>
+      <span style="color:var(--accent);">Ternary Logic LFSR</span> for Cryptography
+    </h1>
+    <div style="margin-top:1.5rem; display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center;">
+      <span style="background:var(--green-dim); border:1px solid rgba(59,220,143,0.25); color:var(--green); padding:0.3rem 0.8rem; border-radius:4px; font-family:var(--mono); font-size:0.72rem; letter-spacing:0.1em;">SCOPUS Q1</span>
+      <span style="background:var(--accent-dim); border:1px solid rgba(124,117,245,0.2); color:var(--accent); padding:0.3rem 0.8rem; border-radius:4px; font-family:var(--mono); font-size:0.72rem; letter-spacing:0.1em;">CITESCORE 8.3</span>
+      <span style="background:var(--card); border:1px solid var(--border); color:var(--text-dim); padding:0.3rem 0.8rem; border-radius:4px; font-family:var(--mono); font-size:0.72rem;">2026 · Vol. 30(3) · pp. 184–214</span>
+    </div>
+    <p style="margin-top:1.5rem; color:var(--text-dim); font-family:var(--mono); font-size:0.82rem;">
+      Advances in Decision Sciences · DOI:
+      <a href="https://doi.org/10.47654/v30y2026i3p184-214" target="_blank" rel="noopener" style="color:var(--accent);">10.47654/v30y2026i3p184-214</a>
+    </p>
+    <div style="margin-top:2rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+      <a href="https://iads.site/a-new-approach-for-image-security-enhancement-using-ternary-logic-linear-feedback-shift-register-for-cryptographic-applications/" target="_blank" rel="noopener" class="btn-primary">
+        Read Full Paper ↗
+      </a>
+      <a href="https://doi.org/10.47654/v30y2026i3p184-214" target="_blank" rel="noopener" class="btn-ghost">
+        DOI Link ↗
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<div style="padding: 4rem 0 6rem;">
+  <div class="container">
+
+    <!-- Abstract -->
+    <div class="reveal">
+      <p class="section-label">Abstract</p>
+    </div>
+
+    <div class="abstract-card reveal reveal-delay-1">
+      <p class="abstract-text">
+        This paper addresses a core decision problem in <strong style="color:var(--text-bright)">healthcare data governance</strong>:
+        how should decision-makers optimally select encryption parameters under resource and
+        threat-model constraints? To answer this, a formal <strong style="color:var(--accent)">multi-criteria decision framework</strong>
+        is developed and instantiated through a novel ternary LFSR-based encryption system.
+      </p>
+      <p class="abstract-text" style="margin-top:1rem;">
+        The proposed method extends traditional binary LFSRs to the
+        <strong style="color:var(--green)">ternary domain GF(3)</strong> — operating over three logic states {0, 1, 2} —
+        to generate pseudo-random keystreams that drive a pixel-permutation cipher.
+        This expands the key space from <code>2ⁿ−1</code> to <code>3ⁿ−1</code> states
+        while maintaining O(N log N) computational complexity.
+      </p>
+      <p class="abstract-text" style="margin-top:1rem;">
+        Evaluated on kidney ultrasound, brain MRI, and multiple sclerosis MRI across 10–15 images per modality.
+        Encrypted images exhibit near-uniform histograms and near-zero pixel correlations (≤ 0.022),
+        with correct-key decryption recovering SSIM of 0.9903–1.0000.
+      </p>
+
+      <div style="margin-top:2rem; padding:1.25rem; background:var(--surface); border:1px solid var(--border); border-radius:8px; max-width:600px;">
+        <p class="proj-arch-label" style="margin-bottom:0.75rem;">Authors</p>
+        <p style="font-size:0.85rem; color:var(--text); line-height:2;">
+          Trapti Sharma · <strong style="color:var(--accent);">Ayush Ranjan</strong> · Harvinder Singh · Rajit Nair
+          <br>
+          <span style="color:var(--text-dim);">VIT Bhopal University, India</span>
+          <br>
+          Hasan Alkahtani · Sami Morsi · Ahmed A.F. Osman · Theyazn H.H. Aldhyani
+          <br>
+          <span style="color:var(--text-dim);">King Faisal University, Saudi Arabia</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="reveal" style="margin-top:3rem;">
+      <p class="section-label">Key Results</p>
+    </div>
+
+    <div class="metrics-full reveal reveal-delay-1">
+      <div class="m-card">
+        <span class="val" style="color:var(--green);">98.04%</span>
+        <div class="metric-name">NPCR</div>
+        <div class="metric-desc">Pixel change rate — measures cipher sensitivity</div>
+      </div>
+      <div class="m-card">
+        <span class="val" style="color:var(--accent);">27.96%</span>
+        <div class="metric-name">UACI</div>
+        <div class="metric-desc">Average intensity change (Brain MRI)</div>
+      </div>
+      <div class="m-card">
+        <span class="val" style="color:var(--cyan);">6.80</span>
+        <div class="metric-name">Entropy (bits)</div>
+        <div class="metric-desc">Kidney ultrasound — near-ideal randomness</div>
+      </div>
+      <div class="m-card">
+        <span class="val" style="color:var(--green);">≥0.9903</span>
+        <div class="metric-name">SSIM</div>
+        <div class="metric-desc">Perfect decryption recovery score</div>
+      </div>
+      <div class="m-card">
+        <span class="val" style="color:var(--accent);">≤0.022</span>
+        <div class="metric-name">Pixel Corr.</div>
+        <div class="metric-desc">Near-zero spatial correlation in ciphertext</div>
+      </div>
+      <div class="m-card">
+        <span class="val" style="color:var(--cyan);">44–52 dB</span>
+        <div class="metric-name">PSNR</div>
+        <div class="metric-desc">Correct-key decryption quality</div>
+      </div>
+      <div class="m-card">
+        <span class="val" style="color:var(--green);">3ⁿ−1</span>
+        <div class="metric-name">Key Space</div>
+        <div class="metric-desc">vs 2ⁿ−1 for binary LFSR</div>
+      </div>
+      <div class="m-card">
+        <span class="val" style="color:var(--accent);">O(N log N)</span>
+        <div class="metric-name">Complexity</div>
+        <div class="metric-desc">IoT/embedded deployable</div>
+      </div>
+    </div>
+
+    <!-- Interactive LFSR Visualizer -->
+    <div class="lfsr-section reveal reveal-delay-2">
+      <p class="section-label" style="color:var(--green);">Interactive Demo</p>
+      <h3 style="margin-top:0.5rem; margin-bottom:0.5rem;">Ternary LFSR Keystream Generator</h3>
+      <p style="font-size:0.88rem; color:var(--text); margin-bottom:1.5rem;">
+        Watch the GF(3) ternary LFSR shift and generate a pseudo-random keystream.
+        Each cell holds a value in {0, 1, 2} — the three ternary states.
+      </p>
+
+      <canvas id="lfsr-canvas"></canvas>
+
+      <div class="lfsr-controls">
+        <button class="lfsr-btn" onclick="stepLFSR()">Step →</button>
+        <button class="lfsr-btn ghost" onclick="runLFSR()">Auto-Run</button>
+        <button class="lfsr-btn ghost" onclick="resetLFSR()">Reset</button>
+        <div class="lfsr-output" id="lfsr-stream">Generated stream: </div>
+      </div>
+
+      <p style="margin-top:1rem; font-size:0.78rem; color:var(--text-dim); font-family:var(--mono);">
+        State registers shown in trit form (0, 1, 2) · Feedback polynomial: x⁸ + x⁶ + x⁴ + x² + 1 over GF(3)
+      </p>
+    </div>
+
+    <!-- Original Contributions -->
+    <div class="reveal" style="margin-top:3rem;">
+      <p class="section-label">Original Contributions</p>
+    </div>
+
+    <div class="contrib-grid reveal reveal-delay-1">
+      <div class="contrib-card primary">
+        <div class="contrib-num">01</div>
+        <h3>Decision Framework for Healthcare Encryption</h3>
+        <p>
+          A formally grounded, evidence-based framework mapping LFSR configuration variables
+          (n, P) to security-versus-cost trade-offs across three healthcare deployment tiers.
+          Minimax-regret analysis provides robust guidance under attacker capability uncertainty.
+          Directly applicable to HIPAA/GDPR compliance.
+        </p>
+      </div>
+      <div class="contrib-card secondary">
+        <div class="contrib-num">02</div>
+        <h3>First GF(3) LFSR Medical Image Cipher</h3>
+        <p>
+          The first deployment of ternary logic (GF(3)) within an LFSR-based cipher specifically
+          for medical image protection. Expands key space from 2ⁿ−1 to 3ⁿ−1 states while maintaining
+          low computational overhead — making it deployable on embedded IoT medical devices.
+        </p>
+      </div>
+    </div>
+
+    <!-- Implications -->
+    <div class="abstract-card reveal reveal-delay-2" style="margin-top:2rem; border-color:rgba(59,220,143,0.2);">
+      <p class="section-label" style="color:var(--green);">Implications</p>
+      <p class="abstract-text">
+        The decision framework gives healthcare administrators and security engineers a structured,
+        <strong style="color:var(--text-bright)">evidence-based basis for encryption parameter selection</strong>,
+        directly supporting risk-based governance and regulatory compliance.
+        The low computational overhead of the ternary LFSR cipher makes the framework practically
+        deployable on <strong style="color:var(--green)">embedded and IoT-based medical devices</strong>.
+      </p>
+      <p class="abstract-text" style="margin-top:1rem;">
+        This work advances decision science methodology by formalizing parameter-selection
+        under resource constraints and threat-model uncertainty — a canonical
+        multi-criteria decision problem — and demonstrating its application to healthcare
+        data governance, where encryption choices directly impact regulatory compliance,
+        patient privacy, and operational efficiency.
+      </p>
+    </div>
+
+    <!-- Citation -->
+    <div class="reveal" style="margin-top:3rem;">
+      <p class="section-label">How to Cite</p>
+    </div>
+
+    <div class="citation-block reveal reveal-delay-1" id="citation-block">
+      <button class="citation-copy" onclick="copyCitation()">Copy</button>
+      Sharma, T., Ranjan, A., Singh, H., Nair, R., Alkahtani, H., Morsi, S.,
+      Osman, A. A. F., &amp; Aldhyani, T. H. H. (2026).
+      A New Approach for Image Security Enhancement Using Ternary Logic Linear Feedback
+      Shift Register for Cryptographic Applications.
+      <em style="color:var(--accent);">Advances in Decision Sciences</em>, 30(3), 184–214.
+      https://doi.org/10.47654/v30y2026i3p184-214
+    </div>
+
+    <div class="reveal" style="margin-top:3rem; display:flex; gap:1rem; flex-wrap:wrap;">
+      <a href="https://iads.site/a-new-approach-for-image-security-enhancement-using-ternary-logic-linear-feedback-shift-register-for-cryptographic-applications/" target="_blank" rel="noopener" class="btn-primary">
+        Read Full Paper ↗
+      </a>
+      <a href="https://doi.org/10.47654/v30y2026i3p184-214" target="_blank" rel="noopener" class="btn-ghost">
+        DOI: 10.47654/v30y2026i3p184-214
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-copy">
+      <span style="font-family:var(--mono);font-size:.7rem;color:var(--text-dim)">&copy; 2026 Ayush Ranjan &nbsp;·&nbsp; <a href="index.html" style="color:var(--accent);">← Home</a></span>
+    </div>
+    <ul class="footer-nav">
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="https://github.com/Ayush-1271" target="_blank" rel="noopener">GitHub ↗</a></li>
+      <li><a href="mailto:ayushranjan1271@gmail.com">Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+/* ── Ternary LFSR Visualizer ── */
+(function() {
+  const canvas = document.getElementById('lfsr-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // 8-stage ternary LFSR (GF(3))
+  let state = [1, 2, 0, 1, 0, 2, 1, 0]; // initial seed
+  const N = state.length;
+  let stream = [];
+  let running = false;
+  let runInterval = null;
+
+  const COLORS = {
+    0: '#505570',  // dim
+    1: '#7c75f5',  // accent
+    2: '#3bdc8f',  // green
+  };
+
+  function draw() {
+    const W = canvas.offsetWidth;
+    const H = canvas.offsetHeight || 140;
+    canvas.width = W;
+    canvas.height = H;
+
+    ctx.clearRect(0, 0, W, H);
+
+    const cellW = Math.floor((W - 40) / N);
+    const cellH = 50;
+    const startX = (W - cellW * N) / 2;
+    const startY = (H - cellH) / 2;
+
+    // Draw cells
+    state.forEach((val, i) => {
+      const x = startX + i * cellW;
+      const y = startY;
+      const color = COLORS[val];
+
+      // Background
+      ctx.fillStyle = 'rgba(16,16,28,0.8)';
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(x + 4, y, cellW - 8, cellH, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      // Value
+      ctx.fillStyle = color;
+      ctx.font = `bold 20px "Syne", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(val.toString(), x + cellW / 2, y + cellH / 2);
+
+      // Arrow between cells
+      if (i < N - 1) {
+        ctx.strokeStyle = 'rgba(80,85,112,0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x + cellW - 4, y + cellH / 2);
+        ctx.lineTo(x + cellW + 2, y + cellH / 2);
+        ctx.stroke();
+      }
+    });
+
+    // Label
+    ctx.fillStyle = '#505570';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('← shift direction', W / 2, startY + cellH + 16);
+
+    // Feedback arrow
+    ctx.strokeStyle = 'rgba(124,117,245,0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    const fX = startX + (N - 1) * cellW + cellW / 2;
+    ctx.moveTo(fX, startY + cellH / 2);
+    ctx.lineTo(fX, startY + cellH + 28);
+    ctx.lineTo(startX + cellW / 2, startY + cellH + 28);
+    ctx.lineTo(startX + cellW / 2, startY + cellH / 2);
+    ctx.stroke();
+
+    ctx.fillStyle = 'rgba(124,117,245,0.7)';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('GF(3) feedback', (startX + fX) / 2, startY + cellH + 26);
+  }
+
+  function computeFeedback() {
+    // Feedback: tap positions [0,2,4,6] (GF(3) XOR = addition mod 3)
+    const taps = [0, 2, 4, 6];
+    let fb = 0;
+    taps.forEach(t => { fb = (fb + state[t]) % 3; });
+    return fb;
+  }
+
+  window.stepLFSR = function() {
+    const out = state[0];
+    const fb = computeFeedback();
+    state = [...state.slice(1), fb];
+    stream.push(out);
+    if (stream.length > 30) stream = stream.slice(-30);
+    document.getElementById('lfsr-stream').textContent = 'Stream: ' + stream.join('');
+    draw();
+  };
+
+  window.resetLFSR = function() {
+    state = [1, 2, 0, 1, 0, 2, 1, 0];
+    stream = [];
+    document.getElementById('lfsr-stream').textContent = 'Generated stream: ';
+    stopLFSR();
+    draw();
+  };
+
+  window.runLFSR = function() {
+    if (running) { stopLFSR(); return; }
+    running = true;
+    const btn = document.querySelector('.lfsr-btn.ghost');
+    if (btn) btn.textContent = 'Stop';
+    runInterval = setInterval(stepLFSR, 250);
+  };
+
+  function stopLFSR() {
+    running = false;
+    if (runInterval) clearInterval(runInterval);
+    const btn = document.querySelector('.lfsr-btn.ghost');
+    if (btn) btn.textContent = 'Auto-Run';
+  }
+
+  draw();
+  window.addEventListener('resize', draw);
+})();
+
+/* ── Copy citation ── */
+function copyCitation() {
+  const text = `Sharma, T., Ranjan, A., Singh, H., Nair, R., Alkahtani, H., Morsi, S., Osman, A. A. F., & Aldhyani, T. H. H. (2026). A New Approach for Image Security Enhancement Using Ternary Logic Linear Feedback Shift Register for Cryptographic Applications. Advances in Decision Sciences, 30(3), 184–214. https://doi.org/10.47654/v30y2026i3p184-214`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.citation-copy');
+    if (btn) { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 2000); }
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const btn = document.querySelector('.citation-copy');
+    if (btn) { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 2000); }
+  });
+}
+</script>
+</body>
+</html>
