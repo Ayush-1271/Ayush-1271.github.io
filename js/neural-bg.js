@@ -207,7 +207,11 @@
 
     renderer.render(scene, camera);
   }
-  animate();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    renderer.render(scene, camera);
+  } else {
+    animate();
+  }
 
   window.addEventListener('resize', function() {
     renderer.setSize(W(), H());

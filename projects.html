@@ -126,7 +126,7 @@
   <div class="page-hero">
     <div class="page-eyebrow">// projects</div>
     <h1 class="page-title">Things I<br><span>Actually Built</span></h1>
-    <p class="page-sub">Seven projects. Each one has a demo or results panel below — not marketing copy, just what the project actually does.</p>
+    <p class="page-sub">Nine selected projects, explained through the problem, implementation, and working interactions — with claims tied to the code and published results.</p>
   </div>
 
   <div class="projects-wrap">
@@ -136,7 +136,7 @@
     ══════════════════════════════════ -->
     <div class="proj-block reveal" id="notemind">
       <div>
-        <div class="proj-num">01 / 07</div>
+        <div class="proj-num">01 / 09</div>
         <div class="proj-cat">AI Infrastructure · Multi-Agent Systems</div>
         <h2 class="proj-title">NoteMind <span class="badge">FEATURED</span></h2>
         <p class="proj-desc">
@@ -184,11 +184,61 @@
     </div>
 
     <!-- ══════════════════════════════════
-         02 — MANGALENS
+         02 — NOVEL VAULT
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal flip" id="novel-vault">
+      <div>
+        <div class="proj-num">02 / 09</div>
+        <div class="proj-cat">Python · Local-First Library · Web Automation</div>
+        <h2 class="proj-title">Novel Vault</h2>
+        <p class="proj-desc">A local web application for organizing novels from supported sources and exporting chapters into personal reading formats. The project separates source adapters, download workflows, and output formats so they can evolve independently.</p>
+        <p class="proj-desc">It supports FanMTL, NovelFire, TomatoMTL, and WTR-Lab; tracks library and chapter data locally with SQLite; and provides batch jobs with progress, cancel, resume, and retry controls. Exports include PDF, EPUB, and plain text.</p>
+        <p class="proj-desc"><strong style="color:#eef0f8">Privacy by design:</strong> downloaded books, cookies, browser profiles, databases, and logs are local runtime data and are excluded from the repository. Use only content you are authorized to access and retain.</p>
+        <div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">FastAPI</span><span class="proj-tag">SQLite</span><span class="proj-tag">Selenium</span><span class="proj-tag">PDF · EPUB · TXT</span></div>
+        <div class="proj-links"><a href="https://github.com/Ayush-1271/Novel-Vault" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ GitHub</a></div>
+      </div>
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">A local reading-library workflow</span></div>
+        <div style="display:grid;gap:.8rem;padding:.6rem 0;font-family:var(--font-mono);font-size:.76rem;color:var(--text)">
+          <div>01 <span style="color:var(--cyan)">Choose source + chapters</span></div>
+          <div>02 <span style="color:var(--accent-light)">Adapter retrieves authorized content</span></div>
+          <div>03 <span style="color:var(--green)">Local library tracks progress</span></div>
+          <div>04 <span style="color:var(--amber)">Export PDF · EPUB · TXT</span></div>
+        </div>
+        <hr class="divider"><div style="font-family:var(--font-mono);font-size:.68rem;color:var(--text-muted)">Designed for local use; no hosted book collection is included.</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         03 — RAG PDF CHAT
+    ══════════════════════════════════ -->
+    <div class="proj-block reveal" id="rag-pdf-chat">
+      <div>
+        <div class="proj-num">03 / 09</div>
+        <div class="proj-cat">LLMs · Retrieval-Augmented Generation · Document Q&amp;A</div>
+        <h2 class="proj-title">RAG PDF Chat</h2>
+        <p class="proj-desc">A document question-answering application that grounds responses in uploaded PDFs and shows page-level source citations. Answers stream to the interface, making both the response and its supporting evidence visible.</p>
+        <p class="proj-desc">The repository combines a React, TypeScript, and Vite interface with a FastAPI backend, LangChain retrieval, and FAISS vector search. Per-session indexes keep document retrieval scoped to the current conversation.</p>
+        <div class="proj-tags"><span class="proj-tag">React · TypeScript</span><span class="proj-tag">FastAPI</span><span class="proj-tag">LangChain</span><span class="proj-tag">FAISS</span><span class="proj-tag">Server-Sent Events</span></div>
+        <div class="proj-links"><a href="https://github.com/Ayush-1271/rag-pdf-chat" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ GitHub</a><a href="https://rag-pdf-chat-seven.vercel.app/" target="_blank" rel="noopener noreferrer" class="proj-link ext">↗ Live Demo</a></div>
+      </div>
+      <div class="demo-panel">
+        <div class="demo-top"><span class="demo-dot"></span><span class="demo-label">Evidence-backed answer flow</span></div>
+        <div style="display:grid;gap:.8rem;padding:.6rem 0;font-family:var(--font-mono);font-size:.76rem;color:var(--text)">
+          <div>PDF <span style="color:var(--text-muted)">→</span> split into searchable passages</div>
+          <div>FAISS <span style="color:var(--text-muted)">→</span> retrieve relevant page evidence</div>
+          <div>LLM <span style="color:var(--text-muted)">→</span> stream an answer with citations</div>
+        </div>
+        <hr class="divider"><div style="font-family:var(--font-mono);font-size:.68rem;color:var(--text-muted)">A citation makes a response easier to check; it does not guarantee correctness.</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         04 — MANGALENS
     ══════════════════════════════════ -->
     <div class="proj-block reveal flip" id="mangalens">
       <div>
-        <div class="proj-num">02 / 07</div>
+      <div class="proj-num">04 / 09</div>
         <div class="proj-cat">Computer Vision · Chrome Extension · Gemini Vision</div>
         <h2 class="proj-title">MangaLens <span class="badge">SHIPPED v1.0.8</span></h2>
         <p class="proj-desc">
@@ -238,7 +288,7 @@
     ══════════════════════════════════ -->
     <div class="proj-block reveal" id="marketlens">
       <div>
-        <div class="proj-num">03 / 07</div>
+      <div class="proj-num">05 / 09</div>
         <div class="proj-cat">Machine Learning · Finance · Reliability</div>
         <h2 class="proj-title">MarketLens</h2>
         <p class="proj-desc">
@@ -284,7 +334,7 @@
     ══════════════════════════════════ -->
     <div class="proj-block reveal flip" id="resume">
       <div>
-        <div class="proj-num">04 / 07</div>
+      <div class="proj-num">06 / 09</div>
         <div class="proj-cat">NLP · Sentence Embeddings · Streamlit</div>
         <h2 class="proj-title">AI Resume<br>Analyzer</h2>
         <p class="proj-desc">
@@ -337,7 +387,7 @@
     ══════════════════════════════════ -->
     <div class="proj-block reveal" id="legal">
       <div>
-        <div class="proj-num">05 / 07</div>
+      <div class="proj-num">07 / 09</div>
         <div class="proj-cat">NLP · Legal Tech · Classification</div>
         <h2 class="proj-title">Legal NLP<br>Classifier</h2>
         <p class="proj-desc">
@@ -377,7 +427,7 @@
     ══════════════════════════════════ -->
     <div class="proj-block reveal flip" id="teachai">
       <div>
-        <div class="proj-num">06 / 07</div>
+      <div class="proj-num">08 / 09</div>
         <div class="proj-cat">Computer Vision · Full Stack · Deployed</div>
         <h2 class="proj-title">TeachAI <span class="badge">LIVE ↗</span></h2>
         <p class="proj-desc">
@@ -409,27 +459,26 @@
     </div>
 
     <!-- ══════════════════════════════════
-         07 — LFSR RESEARCH
+         09 — LFSR RESEARCH
     ══════════════════════════════════ -->
     <div class="proj-block reveal" id="lfsr">
       <div>
-        <div class="proj-num">07 / 07</div>
+      <div class="proj-num">09 / 09</div>
         <div class="proj-cat">Research · Cryptography · Published</div>
         <h2 class="proj-title">Ternary LFSR<br>Cipher</h2>
         <p class="proj-desc">
-          Published research in <em>Advances in Decision Sciences</em> (Q1 Scopus, CiteScore 8.3).
-          Proposes a GF(3) — base-3 — Linear Feedback Shift Register for image encryption.
-          Unlike binary LFSRs, the ternary feedback mechanism triples the keyspace per stage,
-          making brute-force exponentially harder.
+          Published research in <em>Advances in Decision Sciences</em> (2024 CiteScore: 8.3).
+          The paper proposes a GF(3) — base-3 — Linear Feedback Shift Register for image encryption
+          and evaluates it with image-encryption metrics.
         </p>
         <p class="proj-desc">
-          Validated across NPCR (98.04%), Shannon entropy (6.80 bits), UACI, and pixel correlation.
-          Primary application: protecting sensitive medical images during transmission.
+          The paper reports NPCR (98.04%), Shannon entropy (6.80 bits), UACI, and pixel-correlation results.
+          These experimental measures do not by themselves establish security against every attack model.
         </p>
         <div class="proj-tags">
           <span class="proj-tag">GF(3) Fields</span><span class="proj-tag">LFSR</span>
           <span class="proj-tag">Stream Cipher</span><span class="proj-tag">NPCR 98.04%</span>
-          <span class="proj-tag">Q1 Scopus</span>
+          <span class="proj-tag">Published Research</span>
         </div>
         <div class="proj-links">
           <a href="research.html" class="proj-link">Full Research Page →</a>

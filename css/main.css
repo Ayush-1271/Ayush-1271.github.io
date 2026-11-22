@@ -31,7 +31,7 @@
   --amber:        #f59e0b;
   --red:          #ef4444;
   --text:         #a8aec8;
-  --text-muted:   #5a5f7a;
+  --text-muted:   #858ba7;
   --text-b:       #eef0f8;
   --text-d:       #4a4f6a;
   --heading:      #f4f5fc;
@@ -61,6 +61,16 @@
 ───────────────────────────────── */
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html { scroll-behavior: smooth; font-size:16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 body {
   background: var(--bg);
