@@ -20,4 +20,4 @@ This repository is named as a GitHub Pages user site. The published site URL dep
 
 ## Privacy review
 
-The two resume PDFs may contain personal contact information. Review their contents and the intended audience before keeping them in a public repository.
+Both resume PDFs are included in this repository. Review them for personal details you do not want to make public.
